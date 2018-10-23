@@ -4,7 +4,7 @@
     </head>
     <body>
         <h1>음악 신청하기</h1>
-        <form method="POST" action="/song_add/">
+        <form method="POST" action="{% url 'main:song_add' %}">
             {% csrf_token %}
             제목 : <input type="text" name="title">
             <br/>

@@ -4,7 +4,8 @@ from django.db import IntegrityError
 
 
 def song_write(request):
-    return render(request, 'song/song_write.html')
+    if request.method == 'GET':
+        return render(request, 'song/song_write.html')
     
 def song_add(request):
     if request.method == 'GET':
@@ -20,4 +21,3 @@ def song_add(request):
 def song_added(request, song_id):
     context = {'song' : song.objects.get(pk=song_id)}
     return render(request, 'song/song_add.html', context)
-
