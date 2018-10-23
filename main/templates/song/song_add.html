@@ -3,9 +3,17 @@
         <meta charset="UTF-8">
     </head>
     <body>
-        <h1>음악 신청 완료</h1>
-        {{song.title}} - {{song.singer}}
-        <br/>
-        대기시간 {{ delay_time }}
+        <h1>음악 신청하기</h1>
+        <form method="POST" action="{% url 'main:song_add' %}">
+            {% csrf_token %}
+            제목 : <input type="text" name="title">
+            <br/>
+            가수 : <input type="text" name="singer">
+            <br/>
+            메시지 : <input type="text" name="message">
+            가게번호(1,2) : <input type="text" name="store">
+            <!-- <input type="hidden" value=1 name="store"> -->
+            <input type="submit">
+        </form>
     </body>
 </html>

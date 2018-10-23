@@ -3,10 +3,12 @@
         <meta charset="UTF-8">
     </head>
     <body>
-        <h1>가게 음악 리스트</h1>
-        
-        <a href="{% url 'main:song_all_delete' store_id=store_id %}">초기화</a>
-            <br/>
+        <h1>가게 음악 리스트</h1> 
+        {% ifequal song.count 0 %}
+            신청된 노래가 없습니다.
+        {% else %}
+            <a href="{% url 'main:song_all_delete' store_id=store_id %}">초기화</a>
+            <br/><br/>
             {% for s in song %}
                 {{s.title}} - {{s.singer}}
                 <br/>
@@ -17,9 +19,6 @@
                 -------
                 <br/>
             {% endfor %}
-        <br/>
-        
-        
-        
+        {% endifequal %}
     </body>
 </html>
