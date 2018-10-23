@@ -43,5 +43,10 @@ def song_return(request, song_id):
 
 def store_set(request, store_id):
     time = int(request.POST.get('time'))
-    store.objects.filter(pk=store_id).update(delay=time)
+    site = request.POST.get('site')
+    reset_list = int(request.POST.get('reset_list'))
+    reset_played = int(request.POST.get('played'))
+    store.objects.filter(pk=store_id).update(delay=time, site=site, 
+        reset_list=reset_list, reset_played=reset_played)
+
     return redirect('main:store_index', store_id=store_id)

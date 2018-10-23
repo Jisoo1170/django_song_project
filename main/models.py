@@ -3,12 +3,14 @@ from django.db import models
 class store(models.Model):
     TYPE1 = (
         ('1', '멜론'),
-        ('2', '벅스'),
-        ('3', '지니')
+        ('2', '지니'),
+        ('3', '벅스')
     )
     name = models.CharField(max_length=100)
     delay = models.IntegerField(default=0)
     site = models.CharField(max_length=1 ,choices=TYPE1)
+    reset_list = models.IntegerField()
+    reset_played = models.IntegerField()
     def __str__(self):
         return self.name
 
@@ -19,6 +21,5 @@ class song(models.Model):
     singer = models.CharField(max_length=50)
     message = models.CharField(max_length=200, null=True)
     played = models.BooleanField(default=False)
-    deleted = models.BooleanField(default=False)
     def __str__(self):
         return self.title
