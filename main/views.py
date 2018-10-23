@@ -30,3 +30,10 @@ def song_delete(request, song_id):
 def song_all_delete(request, store_id):
     store.objects.get(pk=store_id).song_set.all().delete()
     return redirect('main:store_index', store_id=store_id)
+
+def song_listen(request, song_id):
+    song.objects.filter(pk=song_id).update(played=True)
+    store_id = song.objects.get(pk=song_id).store.id
+    return redirect('main:store_index', store_id)
+
+    

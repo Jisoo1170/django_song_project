@@ -10,14 +10,28 @@
             <a href="{% url 'main:song_all_delete' store_id=store_id %}">초기화</a>
             <br/><br/>
             {% for s in song %}
-                {{s.title}} - {{s.singer}}
-                <br/>
-                {{s.message}}
-                <br/>
-                <a href="{% url 'main:song_delete' song_id=s.pk %}">삭제</a>
-                <br/>
-                -------
-                <br/>
+                {% ifequal s.played False %}
+                    {{s.title}} - {{s.singer}}
+                    <br/>
+                    {{s.message}}
+                    <br/>
+                    <a href="{% url 'main:song_listen' song_id=s.pk %}">완료</a>
+                    <a href="{% url 'main:song_delete' song_id=s.pk %}">삭제</a>
+                    <br/>
+                    -------
+                    <br/>
+                {% endifequal %}
+            {% endfor %}
+
+
+            완료리스트 <br/>
+            {% for s in song %}
+                {% ifequal s.played True %}
+                    {{s.title}} - {{s.singer}}
+                    <br/>
+                    -------
+                    <br/>
+                {% endifequal %}
             {% endfor %}
         {% endifequal %}
     </body>
