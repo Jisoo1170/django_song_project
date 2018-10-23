@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^(?P<store_id>\d+)/song/all_delete/$', song_all_delete, name='song_all_delete'),
     url(r'^song/listen/(?P<song_id>\d+)/$', song_listen, name='song_listen'),
     url(r'^song/return/(?P<song_id>\d+)/$', song_return, name='song_return'),
+
+    url(r'^store/set/(?P<store_id>\d+)/$', store_set, name="store_set"),
 ]

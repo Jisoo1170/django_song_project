@@ -35,5 +35,17 @@
                 {% endifequal %}
             {% endfor %}
         {% endifequal %}
+
+        
+
+        <h4>설정</h4>
+        <form method="POST" action="{% url 'main:store_set' store_id %}">
+            {% csrf_token %}
+            <input type="radio" name="time" value="30" checked /> 30
+            <input type="radio" name="time" value="60"/> 60
+            
+            <br/>
+            <input type="submit" value="저장">
+        </form>
     </body>
 </html>

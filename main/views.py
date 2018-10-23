@@ -40,3 +40,8 @@ def song_return(request, song_id):
     song.objects.filter(pk=song_id).update(played=False)
     store_id = song.objects.get(pk=song_id).store.id
     return redirect('main:store_index', store_id)
+
+def store_set(request, store_id):
+    time = int(request.POST.get('time'))
+    store.objects.filter(pk=store_id).update(delay=time)
+    return redirect('main:store_index', store_id=store_id)
