@@ -36,4 +36,7 @@ def song_listen(request, song_id):
     store_id = song.objects.get(pk=song_id).store.id
     return redirect('main:store_index', store_id)
 
-    
+def song_return(request, song_id):
+    song.objects.filter(pk=song_id).update(played=False)
+    store_id = song.objects.get(pk=song_id).store.id
+    return redirect('main:store_index', store_id)
