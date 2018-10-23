@@ -12,7 +12,7 @@
             {% for s in song %}
                 {% ifequal s.played False %}
                     {{s.title}} - {{s.singer}}
-                    {{s.order_time}}
+                    {{s.order_time|date:"Y .m .d"}}
                     <br/>
                     <a href="{% url 'main:song_listen' song_id=s.pk %}">완료</a>
                     <a href="{% url 'main:song_delete' song_id=s.pk %}">삭제</a>
@@ -27,6 +27,7 @@
             {% for s in song %}
                 {% ifequal s.played True %}
                     {{s.title}} - {{s.singer}}
+                    {{s.order_time|date:"Y .m .d"}}
                     <a href="{% url 'main:song_return' song_id=s.pk %}">되돌리기</a>
                     <br/>
                     -------
