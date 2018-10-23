@@ -7,7 +7,7 @@ class store(models.Model):
         ('3', '지니')
     )
     name = models.CharField(max_length=100)
-    delay = models.IntegerField()
+    delay = models.IntegerField(default=0)
     site = models.CharField(max_length=1 ,choices=TYPE1)
     def __str__(self):
         return self.name
