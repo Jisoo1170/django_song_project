@@ -9,11 +9,25 @@
         {% else %}
             <a href="{% url 'main:song_all_delete' store_id=store_id %}">초기화</a>
             <br/><br/>
+            
             {% for s in song %}
                 {% ifequal s.played False %}
-                    {{s.title}} - {{s.singer}}
+                    {{s.singer}} - {{s.title}}
                     {{s.order_time|date:"Y .m .d"}}
                     <br/>
+
+                    {% if s.store.site == '1' %}
+                        <a href="https://www.melon.com/search/total/index.htm?q={{s.singer}}+{{s.title}}&section=&searchGnbYn=Y&kkoSpl=Y&kkoDpType=&linkOrText=T&ipath=srch_form"
+                        target="_blank">
+                    {% elif s.store.site == '2' %}
+                        <a href="http://www.genie.co.kr/search/searchMain?query={{s.singer}}%2520{{s.title}}"
+                        target="_blank">
+                    {% else %}
+                        <a href="https://music.bugs.co.kr/search/integrated?q={{s.singer}}%20{{s.title}}"
+                        target="_blank">
+                    {% endif %}
+                    검색</a>
+
                     <a href="{% url 'main:song_listen' song_id=s.pk %}">완료</a>
                     <a href="{% url 'main:song_delete' song_id=s.pk %}">삭제</a>
                     <br/>
@@ -26,7 +40,7 @@
             완료리스트 <br/>
             {% for s in song %}
                 {% ifequal s.played True %}
-                    {{s.title}} - {{s.singer}}
+                    {{s.siger}} - {{s.title}}
                     {{s.order_time|date:"Y .m .d"}}
                     <a href="{% url 'main:song_return' song_id=s.pk %}">되돌리기</a>
                     <br/>
@@ -43,8 +57,8 @@
             {% csrf_token %}
 
             예상 소요시간
-            <input type="radio" name="time" value="30" checked /> 30
-            <input type="radio" name="time" value="60"/> 60
+            <input type="radio" name="delay" value="30" checked /> 30
+            <input type="radio" name="delay" value="60"/> 60
             <br>
 
             검색 사이트
@@ -54,13 +68,15 @@
             <br/>
 
             신청 플레이 리스트
-            <input type="radio" name="reset_list" value="2" checked /> 2시간
+            <input type="radio" name="reset_list" value="0" checked /> 설정 안함
+            <input type="radio" name="reset_list" value="2"/> 2시간
             <input type="radio" name="reset_list" value="4"/> 4시간
             <input type="radio" name="reset_list" value="6"/> 6시간
             <br/>
 
             완료 플레이 리스트
-            <input type="radio" name="played" value="2" checked /> 2시간
+            <input type="radio" name="played" value="0" checked/> 설정안함
+            <input type="radio" name="played" value="2"/> 2시간
             <input type="radio" name="played" value="4"/> 4시간
             <input type="radio" name="played" value="6"/> 6시간
             <br/>

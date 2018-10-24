@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from django.db import IntegrityError
+import datetime
 
 def song_add(request):
     if request.method == 'GET':
@@ -42,11 +43,20 @@ def song_return(request, song_id):
     return redirect('main:store_index', store_id)
 
 def store_set(request, store_id):
-    time = int(request.POST.get('time'))
-    site = request.POST.get('site')
-    reset_list = int(request.POST.get('reset_list'))
-    reset_played = int(request.POST.get('played'))
-    store.objects.filter(pk=store_id).update(delay=time, site=site, 
-        reset_list=reset_list, reset_played=reset_played)
+    one_store = store.objects.get(pk=store_id)
+
+    one_store.delay = int(request.POST.get('delay'))
+    one_store.site = request.POST.get('site')
+    one_store.reset_list = int(request.POST.get('reset_list'))
+    one_store.reset_played = int(request.POST.get('played'))
+
+    one_store.save()
+
+    if one_store.reset_list != 0:
+        time = one_store.reset_time + datetime.timedelta(hours=one_store.reset_list)
+        # one_store.song_set.filter(played=False).delete()
+    
+    if one_store.reset_played != 0:
+        one_store.song_set.filter(played=True).delete()
 
     return redirect('main:store_index', store_id=store_id)

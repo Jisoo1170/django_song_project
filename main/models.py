@@ -9,8 +9,9 @@ class store(models.Model):
     name = models.CharField(max_length=100)
     delay = models.IntegerField(default=0)
     site = models.CharField(max_length=1 ,choices=TYPE1)
-    reset_list = models.IntegerField()
-    reset_played = models.IntegerField()
+    reset_list = models.IntegerField(default=0)
+    reset_played = models.IntegerField(default=0)
+    reset_time = models.DateTimeField(auto_now = True)
     def __str__(self):
         return self.name
 
