@@ -54,9 +54,12 @@ def store_set(request, store_id):
 
     if one_store.reset_list != 0:
         time = one_store.reset_time + datetime.timedelta(hours=one_store.reset_list)
+        store.objects.filter(pk=store_id).update(reset_time=time)
         # one_store.song_set.filter(played=False).delete()
     
     if one_store.reset_played != 0:
-        one_store.song_set.filter(played=True).delete()
+        time = one_store.reset_time + datetime.timedelta(hours=one_store.reset_played)
+        store.objects.filter(pk=store_id).update(reset_time=time)
+        # one_store.song_set.filter(played=True).delete()
 
     return redirect('main:store_index', store_id=store_id)
