@@ -11,7 +11,6 @@ class store(models.Model):
     site = models.CharField(max_length=1 ,choices=TYPE1)
     reset_list = models.IntegerField(default=0)
     reset_played = models.IntegerField(default=0)
-    reset_time = models.DateTimeField(auto_now = True)
     def __str__(self):
         return self.name
 
@@ -22,5 +21,6 @@ class song(models.Model):
     singer = models.CharField(max_length=50)
     message = models.CharField(max_length=200, null=True)
     played = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
     def __str__(self):
         return self.title

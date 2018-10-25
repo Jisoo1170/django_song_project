@@ -3,6 +3,7 @@ from .models import *
 from django.db import IntegrityError
 import datetime
 
+
 def song_add(request):
     if request.method == 'GET':
         return render(request, 'song/song_add.html')
@@ -19,7 +20,18 @@ def song_added(request, song_id):
     return render(request, 'song/song_added.html', context)
 
 def store_index(request, store_id):
-    context = {'song' : store.objects.get(pk=store_id).song_set.all, 'store_id' : store_id }
+    one_store = store.objects.get(pk=store_id)
+    if one_store.reset_list != 0:
+        time = datetime.datetime.now() - datetime.timedelta(hours=one_store.reset_list)
+        song = one_store.song_set.filter(order_time__lte=time)
+        song.filter(played=False).update(deleted=True)
+
+    if one_store.reset_played != 0:
+        time = odatetime.datetime.now() - datetime.timedelta(hours=one_store.reset_played)
+        song = one_store.song_set.filter(order_time__lte=time)
+        song.filter(played=True).update(deleted=True)
+
+    context = {'song' : one_store.song_set.filter(deleted=False), 'store_id' : store_id }
     return render(request, 'song/store_index.html', context)
 
 def song_delete(request, song_id):
@@ -32,7 +44,7 @@ def song_all_delete(request, store_id):
     store.objects.get(pk=store_id).song_set.all().delete()
     return redirect('main:store_index', store_id=store_id)
 
-def song_listen(request, song_id):
+def song_played(request, song_id):
     song.objects.filter(pk=song_id).update(played=True)
     store_id = song.objects.get(pk=song_id).store.id
     return redirect('main:store_index', store_id)
@@ -50,16 +62,6 @@ def store_set(request, store_id):
     one_store.reset_list = int(request.POST.get('reset_list'))
     one_store.reset_played = int(request.POST.get('played'))
 
-    one_store.save()
-
-    if one_store.reset_list != 0:
-        time = one_store.reset_time + datetime.timedelta(hours=one_store.reset_list)
-        store.objects.filter(pk=store_id).update(reset_time=time)
-        # one_store.song_set.filter(played=False).delete()
-    
-    if one_store.reset_played != 0:
-        time = one_store.reset_time + datetime.timedelta(hours=one_store.reset_played)
-        store.objects.filter(pk=store_id).update(reset_time=time)
-        # one_store.song_set.filter(played=True).delete()
+    one_store.save() 
 
     return redirect('main:store_index', store_id=store_id)
