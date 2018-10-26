@@ -19,7 +19,7 @@
 
                     {% if s.store.site == '1' %}
                         <a href="https://www.melon.com/search/total/index.htm?q={{s.singer}}+{{s.title}}&section=&searchGnbYn=Y&kkoSpl=Y&kkoDpType=&linkOrText=T&ipath=srch_form"
-                        target="_blank" onclick = "location.href='{% url 'main:song_played' song_id=s.pk %}';">
+                        target="_blank" onclick = "location.href='{% url 'main:song_played' song_id=s.pk %}'';">
                     {% elif s.store.site == '2' %}
                         <a href="http://www.genie.co.kr/search/searchMain?query={{s.singer}}%2520{{s.title}}"
                         target="_blank" onclick = "location.href='{% url 'main:song_played' song_id=s.pk %}';">
@@ -28,7 +28,7 @@
                         target="_blank"  onclick = "location.href='{% url 'main:song_played' song_id=s.pk %}';">
                     {% endif %}
                     검색</a>
-                    
+
                     <a href="{% url 'main:song_delete' song_id=s.pk %}">삭제</a>
                     <br/>
                     -------

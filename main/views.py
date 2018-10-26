@@ -3,7 +3,6 @@ from .models import *
 from django.db import IntegrityError
 import datetime
 
-
 def song_add(request):
     if request.method == 'GET':
         return render(request, 'song/song_add.html')
