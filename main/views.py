@@ -3,9 +3,12 @@ from .models import *
 from django.db import IntegrityError
 import datetime
 
+def index(request):
+    return render(request, 'main/base.html')
+
 def song_add(request):
     if request.method == 'GET':
-        return render(request, 'song/song_add.html')
+        return render(request, 'main/song_add.html')
     else:
         title = request.POST.get('title')
         singer = request.POST.get('singer')
@@ -16,7 +19,7 @@ def song_add(request):
 
 def song_added(request, song_id):
     context = {'song' : song.objects.get(pk=song_id)}
-    return render(request, 'song/song_added.html', context)
+    return render(request, 'main/song_added.html', context)
 
 def store_index(request, store_id):
     one_store = store.objects.get(pk=store_id)
@@ -30,8 +33,13 @@ def store_index(request, store_id):
         song = one_store.song_set.filter(order_time__lte=time)
         song.filter(played=True).update(deleted=True)
 
-    context = {'song' : one_store.song_set.filter(deleted=False), 'store_id' : store_id }
-    return render(request, 'song/store_index.html', context)
+    context = {'song' : one_store.song_set.filter(deleted=False).filter(played=False), 'store' : one_store }
+    return render(request, 'main/store_index.html', context)
+
+def song_complited(request, store_id):
+    one_store = store.objects.get(pk=store_id)
+    context = {'song' : one_store.song_set.filter(deleted=False).filter(played=True), 'store' : one_store }
+    return render(request, 'main/song_complited.html', context)
 
 def song_delete(request, song_id):
     context = song.objects.get(pk=song_id)
@@ -51,7 +59,7 @@ def song_played(request, song_id):
 def song_return(request, song_id):
     song.objects.filter(pk=song_id).update(played=False)
     store_id = song.objects.get(pk=song_id).store.id
-    return redirect('main:store_index', store_id)
+    return redirect('main:song_complited', store_id)
 
 def store_set(request, store_id):
     one_store = store.objects.get(pk=store_id)
