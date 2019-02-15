@@ -29,17 +29,17 @@ def store_index(request, store_id):
         song.filter(played=False).update(deleted=True)
 
     if one_store.reset_played != 0:
-        time = odatetime.datetime.now() - datetime.timedelta(hours=one_store.reset_played)
+        time = datetime.datetime.now() - datetime.timedelta(hours=one_store.reset_played)
         song = one_store.song_set.filter(order_time__lte=time)
         song.filter(played=True).update(deleted=True)
 
     context = {'song' : one_store.song_set.filter(deleted=False).filter(played=False), 'store' : one_store }
     return render(request, 'main/store_index.html', context)
 
-def song_complited(request, store_id):
+def song_completed(request, store_id):
     one_store = store.objects.get(pk=store_id)
     context = {'song' : one_store.song_set.filter(deleted=False).filter(played=True), 'store' : one_store }
-    return render(request, 'main/song_complited.html', context)
+    return render(request, 'main/song_completed.html', context)
 
 def song_delete(request, song_id):
     context = song.objects.get(pk=song_id)
@@ -59,7 +59,7 @@ def song_played(request, song_id):
 def song_return(request, song_id):
     song.objects.filter(pk=song_id).update(played=False)
     store_id = song.objects.get(pk=song_id).store.id
-    return redirect('main:song_complited', store_id)
+    return redirect('main:song_completed', store_id)
 
 def store_set(request, store_id):
     one_store = store.objects.get(pk=store_id)
@@ -67,7 +67,7 @@ def store_set(request, store_id):
     one_store.delay = int(request.POST.get('delay'))
     one_store.site = request.POST.get('site')
     one_store.reset_list = int(request.POST.get('reset_list'))
-    one_store.reset_played = int(request.POST.get('played'))
+    one_store.reset_played = int(request.POST.get('reset_played'))
 
     one_store.save() 
 
